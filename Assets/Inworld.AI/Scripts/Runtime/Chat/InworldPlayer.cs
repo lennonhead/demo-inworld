@@ -130,12 +130,11 @@ namespace Inworld.Sample
         {
             foreach (HistoryItem item in historyItems)
             {
-                if (item.Event.Routing.Source.IsPlayer() && m_WeatherIDCheck.Contains(item.InteractionId) == false)
+                if (item.Event.Routing.Source.IsPlayer() && item.Event.Final == true && m_WeatherIDCheck.Contains(item.InteractionId) == false)
                 {   
-                    // UnityEngine.Debug.Log("CheckForWeather items: "+item.Event.Text);
-                    
                     if (item.Event.Text.IndexOf("weather", StringComparison.OrdinalIgnoreCase) >= 0) 
                     {
+                        m_WeatherIDCheck.Add(item.InteractionId);
                         StartCoroutine(GetGeoParseData(item));
                         return;
                     }
@@ -173,7 +172,7 @@ namespace Inworld.Sample
                     if(!string.IsNullOrEmpty(latt) && !string.IsNullOrEmpty(longt))
                     {
                         // Limits the weather check to only one per interaction after succeful city lookup
-                        m_WeatherIDCheck.Add(item.InteractionId);
+                       // m_WeatherIDCheck.Add(item.InteractionId);
 
                         WeatherCity = jsonData["match"][0]["location"].Value;
                         latt = latt.Substring(0, latt.Length - 1);
